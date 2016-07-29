@@ -1,0 +1,26 @@
+{
+  "name": "jenv",
+  "version": "1.0.0",
+  "description": "save config to git and use it in any project anywhere",
+  "scripts": {
+    "start": "bin/jenv",
+    "test": "jenv -- bin/tester"
+  },
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GongT/jenv.git"
+  },
+  "author": "GongT <gongteng524702837@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GongT/jenv/issues"
+  },
+  "homepage": "https://github.com/GongT/jenv#readme",
+  "dependencies": {
+    "homedir": "^0.6.0",
+    "mkdirp": "^0.5.1",
+    "nodejs-fs-utils": "^1.0.26",
+    "os-locale": "^1.4.0"
+  }
+}

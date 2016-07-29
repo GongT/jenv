@@ -1,0 +1,18 @@
+{
+	"example1": "使用环境prod",
+	"example2": "使用默认环境",
+	"example3": "设置(显示)默认环境",
+	"example4": "设置配置集",
+	"example5": "显示当前配置集名称",
+	"example6": "显示当前环境的内容",
+	"example7": "显示当前环境详情",
+	"example8": "创建一个配置集(项目目录)",
+	"example9": "创建一个配置集(用户目录)",
+	"example10": "修改远程路径",
+	"example_run": "启动一个命令：",
+	"example_local": "当前项目操作：",
+	"example_global": "全局操作：",
+	"example": "例如：",
+	"example_shell": "启动终端",
+	"example_pull": "使用已存在的远程配置集"
+}

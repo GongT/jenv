@@ -1,0 +1,77 @@
+#!/usr/bin/node
+const [node, jenv, ...args] = process.argv;
+const lib = require('../src/lib.js');
+
+global.MyError = class MyError extends Error {
+	
+};
+
+require('../src/i18n.js')((t) => {
+	global.t = t;
+	if (!args.length) {
+		throw require('../src/usage.js');
+	}
+	let [firstArg, ...extra] = args;
+	
+	if (extra.length === 0 && /^shell$/.test(firstArg)) {
+		firstArg = require('os').platform() === 'win32' ? 'cmd.exe' : '/usr/bin/bash';
+	}
+	
+	const isCommand = /^--/.test(firstArg);
+	const isEnv = !isCommand && /^-/.test(firstArg);
+	
+	if (isCommand) {
+		const cmd_options = {};
+		const cmd_args = extra.filter(function (item, i) {
+			if (/^--/.test(item)) {
+				const match = /^--(.+?)(=(.+))?$/.exec(item)
+				if (!match) {
+					console.error('unknwon argument %s', item);
+					process.exit(1);
+				}
+				cmd_options[match[1]] = match[3] === undefined ? true : match[3];
+				return false;
+			} else if (/^-/.test(item)) {
+				if (cmd_options.envName) {
+					console.error('duplicate env argument %s', item);
+					process.exit(1);
+				}
+				cmd_options.envName = item.replace(/^-/, '');
+			} else {
+				return true;
+			}
+		});
+		
+		try {
+			const ret = require('../src/command.js')(firstArg.replace(/^--/, ''), cmd_args, cmd_options);
+			process.exit(ret);
+		} catch (e) {
+			if (e instanceof MyError) {
+				console.error(e.message);
+				process.exit(1);
+			} else {
+				throw e;
+			}
+		}
+	} else { // is env name
+		let envName;
+		if (isEnv) {
+			envName = firstArg.replace(/^\-/, '');
+		} else {
+			envName = lib.getCurrentDefault();
+			extra.unshift(envName);
+		}
+		
+		let config;
+		try {
+			config = lib.readEnvSync(envName);
+		} catch (err) {
+			console.error(`can't load environment "${envName}":\n    ${err.message}`);
+			process.exit(1);
+		}
+		
+		lib.applyGlobalEnv(config);
+		const ret = require('../src/shell.js')(extra);
+		process.exit(ret);
+	}
+});
