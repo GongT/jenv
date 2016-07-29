@@ -78,6 +78,7 @@ module.updateConfigSet = require('./config-set-update.js');
 
 lib.applyGlobalEnv = function applyGlobalEnv(config) {
 	process.env.JSON_FIELDS = '';
+	process.env.JENV_FILE_NAME = config.JENV_FILE_NAME;
 	Object.keys(config).forEach((key) => {
 		let value = config[key];
 		if (value instanceof Date) {
@@ -93,8 +94,7 @@ lib.applyGlobalEnv = function applyGlobalEnv(config) {
 		process.env[key.toString().toUpperCase()] = value;
 	});
 };
-
-lib.readEnvSync = function readEnvSync(name) {
+lib.getEnvFileFullPath = function getEnvFileFullPath(name) {
 	const setName = lib.getCurrentConfigSet();
 	if (!setName) {
 		throw new MyError('config set has not define, use "jenv --set" or "jenv --pull" to set it.');
@@ -109,7 +109,14 @@ lib.readEnvSync = function readEnvSync(name) {
 	if (!fs.existsSync(confFile)) {
 		throw new MyError(`can't find config "${name}" in set "${setName}"`);
 	}
-	return JSON.parse(fs.readFileSync(confFile, 'utf-8'));
+	return confFile;
+};
+
+lib.readEnvSync = function readEnvSync(name) {
+	const confFile = lib.getEnvFileFullPath(name);
+	const config = JSON.parse(fs.readFileSync(confFile, 'utf-8'));
+	config.JENV_FILE_NAME = confFile;
+	return config;
 };
 lib.createConfigSet = function createConfigSet(name, global) {
 	const targetPath = configSetPath(name)[global ? 1 : 0];
