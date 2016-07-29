@@ -217,7 +217,7 @@ lib.uploadRemote = function (gitPath) {
 lib.downloadRemote = function (gitPath) {
 	gitcheck(gitPath);
 	
-	if (!lib.spawnSync('git', ['pull'], path)) {
+	if (!lib.spawnSync('git', ['pull', 'origin', ''], path)) {
 		console.error(`can't run "git pull" command.`);
 		return false;
 	}
