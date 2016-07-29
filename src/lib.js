@@ -77,7 +77,21 @@ module.createConfigSet = require('./config-set-create.js');
 module.updateConfigSet = require('./config-set-update.js');
 
 lib.applyGlobalEnv = function applyGlobalEnv(config) {
-	require('util')._extend(process.env, config);
+	process.env.JSON_FIELDS = '';
+	Object.keys(config).forEach((key) => {
+		let value = config[key];
+		if (value instanceof Date) {
+			value = value.toISOString();
+		} else if (value === null || value === undefined) {
+			value = '';
+		} else if (Array.isArray(value)) {
+			value = value.join(',');
+		} else if (typeof value === 'object') {
+			value = JSON.stringify(value);
+			process.env.JSON_FIELDS += `${key},`;
+		}
+		process.env[key.toString().toUpperCase()] = value;
+	});
 };
 
 lib.readEnvSync = function readEnvSync(name) {
@@ -200,15 +214,15 @@ lib.setRemote = (path, newRemote) => {
 lib.uploadRemote = function (gitPath) {
 	gitcheck(gitPath);
 	
-	if (!lib.spawnSync('git', ['add', '.'], path)) {
+	if (!lib.spawnSync('git', ['add', '.'], gitPath)) {
 		console.error(`can't run "git add" command.`);
 		return false;
 	}
-	if (!lib.spawnSync('git', ['commit', '-a', '-m', 'manual upload'], path)) {
+	if (!lib.spawnSync('git', ['commit', '-a', '-m', 'manual upload'], gitPath)) {
 		console.error(`can't run "git commit" command.`);
 		return false;
 	}
-	if (!lib.spawnSync('git', ['push'], path)) {
+	if (!lib.spawnSync('git', ['push'], gitPath)) {
 		console.error(`can't run "git push" command.`);
 		return false;
 	}
@@ -217,7 +231,7 @@ lib.uploadRemote = function (gitPath) {
 lib.downloadRemote = function (gitPath) {
 	gitcheck(gitPath);
 	
-	if (!lib.spawnSync('git', ['pull', 'origin', ''], path)) {
+	if (!lib.spawnSync('git', ['pull'], gitPath)) {
 		console.error(`can't run "git pull" command.`);
 		return false;
 	}
@@ -294,7 +308,7 @@ function spawnSync(cmd, args, options) {
 	}
 	options.stdio = 'inherit';
 	
-	console.error(cmd, args.join(' '));
+	console.error('::: ', cmd, args.join(' '));
 	
 	const ret = nodeSpawnSync(cmd, args, options);
 	return ret.status === 0;

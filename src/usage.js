@@ -26,6 +26,8 @@ ${t('example_global')}
   jenv --init new_name [git_url]      ${t('example8')}
   jenv --init --global new_name [git_url]       ${t('example9')}
   jenv --remote env_name [git_url]    ${t('example10')}
+  jenv --upload [set_name]            ${t('git_upload')}
+  jenv --download [set_name]          ${t('git_download')}
 `;
 
 console.error(usage);
