@@ -116,6 +116,13 @@ ${t('available_env')}:
 		return !!savePath;
 	},
 	remote(configSetName, remoteUrl){
+		if (remoteUrl === undefined) {
+			if (/^[a-zA-Z0-9\-_]+$/.test(configSetName)) {
+				throw new MyError('env name must be /[a-zA-Z0-9\-_]+/');
+			}
+			remoteUrl = configSetName;
+			configSetName = undefined;
+		}
 		return lib.setRemote(requireConfigSetPath(configSetName), remoteUrl);
 	},
 	upload(configSetName){

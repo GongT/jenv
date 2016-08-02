@@ -2,6 +2,9 @@
 	"name": "json-env-cli",
 	"version": "1.0.2",
 	"description": "save config to git (as json) and set (some of) them as environment variables",
+	"bin": {
+		"jenv": "./bin/jenv"
+	},
 	"scripts": {
 		"start": "bin/jenv",
 		"test": "jenv -- bin/tester"

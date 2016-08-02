@@ -266,7 +266,6 @@ lib.uploadRemote = function (gitPath) {
 	}
 	if (!lib.spawnSync('git', ['commit', '-a', '-m', 'manual upload'], gitPath)) {
 		console.error(`can't run "git commit" command.`);
-		return false;
 	}
 	if (!lib.spawnSync('git', ['push'], gitPath)) {
 		console.error(`can't run "git push" command.`);
