@@ -1,4 +1,6 @@
-#!/usr/bin/node
+#!/bin/sh
+':' // ; exec "$(command -v nodejs || command -v node)" "$0" "$@" ; exit
+
 const [node, jenv, ...args] = process.argv;
 const lib = require('../src/lib.js');
 
