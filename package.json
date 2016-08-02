@@ -1,7 +1,7 @@
 {
-  "name": "jenv",
+  "name": "json-env-cli",
   "version": "1.0.0",
-  "description": "save config to git and use it in any project anywhere",
+  "description": "save config to git (as json) and set (some of) them as environment variables",
   "scripts": {
     "start": "bin/jenv",
     "test": "jenv -- bin/tester"
