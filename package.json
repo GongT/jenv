@@ -1,27 +1,27 @@
 {
-  "name": "json-env-cli",
-  "version": "1.0.0",
-  "description": "save config to git (as json) and set (some of) them as environment variables",
-  "scripts": {
-    "start": "bin/jenv",
-    "test": "jenv -- bin/tester"
-  },
-  "preferGlobal": true,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GongT/jenv.git"
-  },
-  "author": "GongT <gongteng524702837@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/GongT/jenv/issues"
-  },
-  "homepage": "https://github.com/GongT/jenv#readme",
-  "dependencies": {
-    "extend": "^3.0.0",
-    "homedir": "^0.6.0",
-    "mkdirp": "^0.5.1",
-    "nodejs-fs-utils": "^1.0.26",
-    "os-locale": "^1.4.0"
-  }
+	"name": "json-env-cli",
+	"version": "1.0.1",
+	"description": "save config to git (as json) and set (some of) them as environment variables",
+	"scripts": {
+		"start": "bin/jenv",
+		"test": "jenv -- bin/tester"
+	},
+	"preferGlobal": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/GongT/jenv.git"
+	},
+	"author": "GongT <gongteng524702837@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/GongT/jenv/issues"
+	},
+	"homepage": "https://github.com/GongT/jenv#readme",
+	"dependencies": {
+		"extend": "^3.0.0",
+		"homedir": "^0.6.0",
+		"mkdirp": "^0.5.1",
+		"nodejs-fs-utils": "^1.0.26",
+		"os-locale": "^1.4.0"
+	}
 }

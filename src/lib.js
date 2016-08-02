@@ -85,12 +85,14 @@ lib.applyGlobalEnv = function applyGlobalEnv(config) {
 			value = value.toISOString();
 		} else if (value === null || value === undefined) {
 			value = '';
+		} else if (typeof value === 'boolean') {
+			value = value ? 'yes' : '';
 		} else if (Array.isArray(value) && typeof value[0] !== 'object') {
 			value = value.join(',');
 		} else if (typeof value === 'object') {
 			return; // no object will assign
 		}
-		process.env[key.toString().toUpperCase()] = value;
+		process.env[constant_name_style(key.toString())] = value;
 	});
 };
 
@@ -355,5 +357,14 @@ function spawnSync(cmd, args, options) {
 	return ret.status === 0;
 }
 lib.spawnSync = spawnSync;
+
+function constant_name_style(str) {
+	if (str.toUpperCase() === str) {
+		return str;
+	}
+	return str.replace(/([a-z])([A-Z])/g, (m0, first, next) => {
+		return `${first}_${next.toUpperCase()}`;
+	}).toUpperCase();
+}
 
 module.exports = lib;
