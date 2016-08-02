@@ -7,6 +7,8 @@ module.exports = (args) => {
 		args = [os.platform() === 'win32' ? 'cmd.exe' : 'bash'];
 	}
 	
+	console.log('::: %s', args.join(' '));
+	
 	const child = nodeSpawnSync(args[0], args.slice(1), {
 		stdio: 'inherit',
 		cwd: process.cwd(),

@@ -6,6 +6,7 @@ const homedir = require('homedir');
 const fsUtils = require('nodejs-fs-utils');
 const nodeSpawnSync = require('child_process').spawnSync;
 const nodeExecSync = require('child_process').execSync;
+const extend = require('extend');
 
 const DEFAULT_FILE = path.resolve(process.cwd(), './.jsonenv/default');
 const DEFAULT_FILE_PATH = path.resolve(process.cwd(), './.jsonenv');
@@ -77,47 +78,78 @@ module.createConfigSet = require('./config-set-create.js');
 module.updateConfigSet = require('./config-set-update.js');
 
 lib.applyGlobalEnv = function applyGlobalEnv(config) {
-	process.env.JSON_FIELDS = '';
-	process.env.JENV_FILE_NAME = config.JENV_FILE_NAME;
+	process.env.JENV_FILE_NAME = config.JENV_FILE_NAME; // ensure first
 	Object.keys(config).forEach((key) => {
 		let value = config[key];
 		if (value instanceof Date) {
 			value = value.toISOString();
 		} else if (value === null || value === undefined) {
 			value = '';
-		} else if (Array.isArray(value)) {
+		} else if (Array.isArray(value) && typeof value[0] !== 'object') {
 			value = value.join(',');
 		} else if (typeof value === 'object') {
-			value = JSON.stringify(value);
-			process.env.JSON_FIELDS += `${key},`;
+			return; // no object will assign
 		}
 		process.env[key.toString().toUpperCase()] = value;
 	});
 };
-lib.getEnvFileFullPath = function getEnvFileFullPath(name) {
+
+lib.readEnvSync = function readEnvSync(name) {
 	const setName = lib.getCurrentConfigSet();
 	if (!setName) {
 		throw new MyError('config set has not define, use "jenv --set" or "jenv --pull" to set it.');
 	}
 	
-	const dir = lib.getConfigSetPath(setName);
-	if (!dir) {
+	const setPath = lib.getConfigSetPath(setName);
+	if (!setPath) {
 		throw new MyError(`config set "${setName}" do not exists`);
 	}
 	
-	const confFile = path.resolve(dir, `${name}.json`);
-	if (!fs.existsSync(confFile)) {
-		throw new MyError(`can't find config "${name}" in set "${setName}"`);
+	function getFileContent(dir, allowDefault) {
+		var confFile;
+		
+		// read current
+		confFile = path.resolve(dir, `${name}.json`);
+		if (!fs.existsSync(confFile)) {
+			if (allowDefault) {
+				// read default
+				confFile = path.resolve(dir, `default.json`);
+			}
+		}
+		if (fs.existsSync(confFile)) {
+			console.log('-> %s', confFile);
+			return JSON.parse(fs.readFileSync(confFile, 'utf-8'));
+		} else {
+			throw new Error(`required config file "${confFile}" not found.`);
+		}
 	}
-	return confFile;
+	
+	const result = {};
+	
+	function parseFolder(itr, dir, isRoot) {
+		extend(true, itr, getFileContent(dir, !isRoot));
+		fs.readdirSync(dir).forEach((name) => {
+			if (/^\./.test(name)) {
+				return;
+			}
+			const subFile = path.resolve(dir, name);
+			if (fs.lstatSync(subFile).isDirectory()) {
+				itr[name] = {};
+				parseFolder(itr[name], subFile, false);
+			}
+		});
+	}
+	
+	parseFolder(result, setPath, true);
+	
+	const temp_config_file = path.resolve(os.tmpdir(), md5(setPath) + '.json');
+	fs.writeFileSync(temp_config_file, JSON.stringify(result), 'utf-8');
+	result.JENV_FILE_NAME = temp_config_file;
+	return result;
 };
-
-lib.readEnvSync = function readEnvSync(name) {
-	const confFile = lib.getEnvFileFullPath(name);
-	const config = JSON.parse(fs.readFileSync(confFile, 'utf-8'));
-	config.JENV_FILE_NAME = confFile;
-	return config;
-};
+function md5(str) {
+	return require('crypto').createHash('md5').update(str).digest("hex");
+}
 lib.createConfigSet = function createConfigSet(name, global) {
 	const targetPath = configSetPath(name)[global ? 1 : 0];
 	if (fs.existsSync(targetPath)) {
@@ -161,11 +193,13 @@ lib.createConfigSet = function createConfigSet(name, global) {
 		if (!ret) {
 			throw new MyError('run git command failed. (see above)');
 		}
-		return targetPath;
+		
 	} catch (e) {
 		fsUtils.rmdirsSync(targetPath);
 		throw e;
 	}
+	lib.setCurrentConfigSet(lib.getLocalConfigName());
+	return targetPath;
 };
 lib.fetchConfigSet = function fetchConfigSet(name, global, force) {
 	const targetPath = configSetPath(name)[global ? 1 : 0];
@@ -182,7 +216,7 @@ lib.fetchConfigSet = function fetchConfigSet(name, global, force) {
 	if (!ret) {
 		throw new MyError('run git command failed. (see above)');
 	}
-	ret = spawnSync('git', ['checkout', 'jsonenv'], targetPath);
+	ret = spawnSync('git', ['checkout', '-b', 'jsonenv'], targetPath);
 	if (!ret) {
 		throw new MyError('run git command failed. (see above)');
 	}

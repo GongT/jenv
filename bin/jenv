@@ -59,7 +59,7 @@ require('../src/i18n.js')((t) => {
 			envName = firstArg.replace(/^\-/, '');
 		} else {
 			envName = lib.getCurrentDefault();
-			extra.unshift(envName);
+			extra.unshift(firstArg);
 		}
 		
 		let config;

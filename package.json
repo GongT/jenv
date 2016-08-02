@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/GongT/jenv#readme",
   "dependencies": {
+    "extend": "^3.0.0",
     "homedir": "^0.6.0",
     "mkdirp": "^0.5.1",
     "nodejs-fs-utils": "^1.0.26",
