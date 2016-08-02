@@ -142,12 +142,18 @@ drwxr-xr-x.   3 GongT GongT  4096 Jul 20 15:53 bin
 ```
 
 #### pass env to docker container with Dockerfile at build time
+```bash
+docker build \
+	--build-arg="JENV_FILE_NAME_REL=${JENV_FILE_NAME_REL}" \
+	-t="my/container" .
+```
+
 ```Dockerfile
-# build: jenv docker build .
 FROM php@fpm-alpine
 
 COPY . /usr/src/myapp
-COPY ${JENV_FILE_NAME} /usr/src/myapp/config.json
+ARG JENV_FILE_NAME_REL
+COPY ${JENV_FILE_NAME_REL} /usr/src/myapp/config.json
 ENV CONFIG_FILE /usr/src/myapp/config.json
 
 EXPOSE 9000

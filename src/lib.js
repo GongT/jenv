@@ -9,7 +9,12 @@ const nodeExecSync = require('child_process').execSync;
 const extend = require('extend');
 
 const DEFAULT_FILE = path.resolve(process.cwd(), './.jsonenv/default');
+const TEMP_FILE = path.resolve(process.cwd(), './.jsonenv/', `_current_result.json`);
 const DEFAULT_FILE_PATH = path.resolve(process.cwd(), './.jsonenv');
+
+/*function md5(str) {
+ return require('crypto').createHash('md5').update(str).digest("hex");
+ }*/
 
 const lib = {};
 
@@ -79,6 +84,7 @@ module.updateConfigSet = require('./config-set-update.js');
 
 lib.applyGlobalEnv = function applyGlobalEnv(config) {
 	process.env.JENV_FILE_NAME = config.JENV_FILE_NAME; // ensure first
+	process.env.JENV_FILE_NAME_REL = config.JENV_FILE_NAME_REL
 	Object.keys(config).forEach((key) => {
 		let value = config[key];
 		if (value instanceof Date) {
@@ -144,14 +150,11 @@ lib.readEnvSync = function readEnvSync(name) {
 	
 	parseFolder(result, setPath, true);
 	
-	const temp_config_file = path.resolve(os.tmpdir(), md5(setPath) + '.json');
-	fs.writeFileSync(temp_config_file, JSON.stringify(result), 'utf-8');
-	result.JENV_FILE_NAME = temp_config_file;
+	fs.writeFileSync(TEMP_FILE, JSON.stringify(result), 'utf-8');
+	result.JENV_FILE_NAME = TEMP_FILE;
+	result.JENV_FILE_NAME_REL = TEMP_FILE.replace(process.cwd() + '', '.');
 	return result;
 };
-function md5(str) {
-	return require('crypto').createHash('md5').update(str).digest("hex");
-}
 lib.createConfigSet = function createConfigSet(name, global) {
 	const targetPath = configSetPath(name)[global ? 1 : 0];
 	if (fs.existsSync(targetPath)) {
