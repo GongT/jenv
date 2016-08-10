@@ -113,23 +113,29 @@ lib.readEnvSync = function readEnvSync(name) {
 		throw new MyError(`config set "${setName}" do not exists`);
 	}
 	
-	function getFileContent(dir, allowDefault) {
-		var confFile;
+	function getFileContent(dir, allowImplicitDefault) {
+		const defaultFile = path.resolve(dir, `default.json`);
+		const defaultExists = fs.existsSync(defaultFile);
+		
+		if (defaultExists) {
+			console.log('-> %s', defaultFile);
+		}
+		
+		const ret = defaultExists ? parseJsonFile(defaultFile) : {};
 		
 		// read current
-		confFile = path.resolve(dir, `${name}.json`);
-		if (!fs.existsSync(confFile)) {
-			if (allowDefault) {
-				// read default
-				confFile = path.resolve(dir, `default.json`);
-			}
-		}
+		const confFile = path.resolve(dir, `${name}.json`);
 		if (fs.existsSync(confFile)) {
 			console.log('-> %s', confFile);
-			return JSON.parse(fs.readFileSync(confFile, 'utf-8'));
+			extend(ret, parseJsonFile(confFile));
 		} else {
-			throw new Error(`required config file "${confFile}" not found.`);
+			if (allowImplicitDefault && defaultExists) {
+				// just use default
+			} else {
+				throw new Error(`required config file "${confFile}" not found.`);
+			}
 		}
+		return ret;
 	}
 	
 	const result = {};
@@ -155,6 +161,14 @@ lib.readEnvSync = function readEnvSync(name) {
 	result.JENV_FILE_NAME_REL = TEMP_FILE.replace(process.cwd() + '', '.');
 	return result;
 };
+function parseJsonFile(file) {
+	try {
+		return JSON.parse(fs.readFileSync(file, 'utf-8'));
+	} catch (e) {
+		e.message += ` (in file ${file})`;
+		throw e;
+	}
+}
 lib.createConfigSet = function createConfigSet(name, global) {
 	const targetPath = configSetPath(name)[global ? 1 : 0];
 	if (fs.existsSync(targetPath)) {
@@ -221,7 +235,7 @@ lib.fetchConfigSet = function fetchConfigSet(name, global, force) {
 	if (!ret) {
 		throw new MyError('run git command failed. (see above)');
 	}
-	ret = spawnSync('git', ['checkout', '-b', 'jsonenv'], targetPath);
+	ret = spawnSync('git', ['checkout', 'jsonenv'], targetPath);
 	if (!ret) {
 		throw new MyError('run git command failed. (see above)');
 	}
@@ -238,6 +252,7 @@ lib.fetchConfigSet = function fetchConfigSet(name, global, force) {
 		throw new MyError(`source git ${name} is not a config set: name not defined`);
 	}
 	
+	lib.setCurrentConfigSet(lib.getLocalConfigName());
 	return ins.name;
 };
 

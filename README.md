@@ -25,11 +25,6 @@ jenv --help
   |-   cn.json
 </pre>
 
-if env is **GongT** then passport/default.json will load.
-
-but if env is **dev** then passport/default.json will not load.
-
-if env is **blabla** then there is a fatal error
 
 ### example config file:
 cn.json:
