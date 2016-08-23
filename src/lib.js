@@ -157,6 +157,8 @@ lib.readEnvSync = function readEnvSync(name) {
 	parseFolder(result, setPath, true);
 	
 	fs.writeFileSync(TEMP_FILE, JSON.stringify(result), 'utf-8');
+	require('./d.ts.js')(TEMP_FILE);
+	
 	result.JENV_FILE_NAME = TEMP_FILE;
 	result.JENV_FILE_NAME_REL = TEMP_FILE.replace(process.cwd() + '', '.');
 	return result;
