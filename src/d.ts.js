@@ -16,12 +16,12 @@ namespace global {
 }
 `;
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';
-	console.log('<- %s', dts);
+	// console.log('<- %s', dts);
 	fs.writeFileSync(dts, result, 'utf-8');
 };
 
 function subObject(k, v, prepend) {
-	console.log('subObject:', k);
+	// console.log('subObject:', k);
 	const subName = 'I' + ucfirst(k) + 'Config';
 	const subContent = loopObject(v, subName);
 	
@@ -31,7 +31,7 @@ function subObject(k, v, prepend) {
 }
 
 function subArray(k, v, prepend) {
-	console.log('subArray:', k);
+	// console.log('subArray:', k);
 	let t = typeof v, typeDeclare;
 	const subName = 'I' + ucfirst(k) + 'Array';
 	
@@ -49,14 +49,14 @@ function subArray(k, v, prepend) {
 }
 
 function loopObject(object, objectName) {
-	console.log('loopObject:', objectName);
+	// console.log('loopObject:', objectName);
 	const prepend = [];
 	const content = [];
 	
 	Object.keys(object).forEach((k) => {
 		const v = object[k];
 		let t = typeof v;
-		console.log('  -> ', k, ':', t);
+		// console.log('  -> ', k, ':', t);
 		
 		if (Array.isArray(v)) {
 			t = subArray(k, v[0], prepend);
