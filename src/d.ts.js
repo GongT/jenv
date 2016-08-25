@@ -7,12 +7,12 @@ module.exports = function (targetFile) {
 	
 	const result = `// GENERATED FILE
 
-module JsonEnv {
+module JsonEnvConfigModule {
 	${text}
 }
 
 namespace global {
-	const JsonEnv:JsonEnv.IJsonEnv;
+	var JsonEnv:JsonEnvConfigModule.IJsonEnv;
 }
 `;
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';
