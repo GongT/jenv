@@ -1,16 +1,19 @@
 {
-	"name": "json-env-data",
-	"version": "1.0.0",
-	"description": "load json from `json-env-cli`",
-	"main": "./require.js",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/GongT/jenv.git"
-	},
-	"author": "GongT <gongteng524702837@gmail.com>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/GongT/jenv/issues"
-	},
-	"homepage": "https://github.com/GongT/jenv#readme"
+  "name": "json-env-data",
+  "version": "1.1.2",
+  "description": "load json from `json-env-cli`",
+  "main": "./require.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GongT/jenv.git"
+  },
+  "author": "GongT <gongteng524702837@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GongT/jenv/issues"
+  },
+  "homepage": "https://github.com/GongT/jenv#readme",
+  "dependencies": {
+    "mongodb": "^2.2.8"
+  }
 }
