@@ -11,6 +11,7 @@ ${t('example')}
 ${t('example_local')}
   jenv --set new_name                ${t('example4')}
   jenv --pull git_url                ${t('example_pull')}
+  jenv --pull --global git_url       ${t('example_pull_global')}
   jenv --get                         ${t('example5')}
   jenv --ls [env_name]               ${t('example6')}
   jenv --status                      ${t('example7')}

@@ -27,7 +27,13 @@ const CommandList = {
 	// local part
 	default(setValue) {
 		if (setValue) {
-			requireConfigEnv(setValue);
+			if (!configEnvExists(setValue)) {
+				if (this.create) {
+					CommandList.new(setValue);
+				} else {
+					throw new MyError(`can't find env "${setValue}"`);
+				}
+			}
 			return lib.setCurrentDefault(setValue);
 		} else {
 			if (lib.getCurrentDefault()) {
@@ -43,8 +49,9 @@ const CommandList = {
 		if (!gitUrl) {
 			throw require('./usage.js');
 		}
-		const newName = lib.fetchConfigSet(gitUrl, false, this.force);
-		return lib.setCurrentConfigSet(newName);
+		const { name, path } = lib.fetchConfigSet(gitUrl, this.global, this.force);
+		console.log('pull success: the config set is saved to %s', path);
+		return lib.setCurrentConfigSet(name);
 	},
 	set(configSetName) {
 		if (!configSetName) {
@@ -165,11 +172,8 @@ function requireCurrentConfigSet() {
 	}
 	return cset;
 }
-function requireConfigEnv(env) {
+function configEnvExists(env) {
 	const cset = requireCurrentConfigSet();
 	const available = lib.getAllEnv(cset);
-	if (available.indexOf(env) === -1) {
-		throw new MyError(`can't find env "${env}"`);
-	}
-	return true;
+	return available.indexOf(env) !== -1;
 }

@@ -222,8 +222,35 @@ lib.createConfigSet = function createConfigSet(name, global) {
 	lib.setCurrentConfigSet(lib.getLocalConfigName());
 	return targetPath;
 };
-lib.fetchConfigSet = function fetchConfigSet(name, global, force) {
-	const targetPath = configSetPath(name)[global ? 1 : 0];
+lib.fetchConfigSet = function fetchConfigSet(git_url, global, force) {
+	const tempPath = path.join(os.tmpdir(), 'jenv_fetch_temp');
+	if (!fs.existsSync(tempPath)) {
+		mkdirp.sync(path.dirname(tempPath));
+		
+		let ret = spawnSync('git', ['clone', git_url, tempPath]);
+		if (!ret) {
+			throw new MyError('run git command failed. (see above)');
+		}
+		ret = spawnSync('git', ['checkout', 'jsonenv'], tempPath);
+		if (!ret) {
+			throw new MyError('run git command failed. (see above)');
+		}
+	}
+	
+	const installFile = path.resolve(tempPath, '.jsonenv');
+	if (!fs.existsSync(installFile)) {
+		throw new MyError(`"${tempPath}" is exists but not a jsonenv storage.`);
+	}
+	
+	let config;
+	try {
+		config = JSON.parse(fs.readFileSync(installFile))
+	} catch (e) {
+		throw new MyError(`the ID-file(.jsonenv) parse error:\n ${e.message}`);
+	}
+	const configSetName = config.name;
+	
+	const targetPath = configSetPath(configSetName)[global ? 1 : 0];
 	if (fs.existsSync(targetPath)) {
 		if (force) {
 			fsUtils.rmdirsSync(targetPath);
@@ -233,29 +260,10 @@ lib.fetchConfigSet = function fetchConfigSet(name, global, force) {
 	}
 	mkdirp.sync(path.dirname(targetPath));
 	
-	let ret = spawnSync('git', ['clone', name, targetPath]);
-	if (!ret) {
-		throw new MyError('run git command failed. (see above)');
-	}
-	ret = spawnSync('git', ['checkout', 'jsonenv'], targetPath);
-	if (!ret) {
-		throw new MyError('run git command failed. (see above)');
-	}
+	fsUtils.moveSync(tempPath, targetPath);
 	
-	let ins;
-	try {
-		const installFile = path.resolve(targetPath, '.jsonenv');
-		ins = JSON.parse(fs.readFileSync(installFile, 'utf-8'));
-	} catch (e) {
-		fsUtils.rmdirsSync(targetPath);
-		throw new MyError(`source git ${name} is not a config set: ${e.message}`);
-	}
-	if (!ins || !ins.name) {
-		throw new MyError(`source git ${name} is not a config set: name not defined`);
-	}
-	
-	lib.setCurrentConfigSet(lib.getLocalConfigName());
-	return ins.name;
+	lib.setCurrentConfigSet(configSetName);
+	return { name: configSetName, path: targetPath };
 };
 
 lib.getSavePath = (envName, global) => {
@@ -340,7 +348,8 @@ lib.newEnv = (dir, name) => {
 	const targetFile = path.resolve(dir, `${name}.json`);
 	
 	if (fs.existsSync(targetFile)) {
-		throw new MyError(`target file ${targetFile} already exists.`);
+		console.error(`info: target file ${targetFile} already exists.`);
+		return true;
 	}
 	
 	let def = {};

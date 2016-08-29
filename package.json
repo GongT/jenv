@@ -1,6 +1,6 @@
 {
 	"name": "json-env-cli",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "save config to git (as json) and set (some of) them as environment variables",
 	"main": "./simple-package/require.js",
 	"bin": {
