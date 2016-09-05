@@ -46,6 +46,9 @@ require('../src/i18n.js')((t) => {
 		
 		try {
 			const ret = require('../src/command.js')(firstArg.replace(/^--/, ''), cmd_args, cmd_options);
+			if(ret === 999){
+				return;
+			}
 			process.exit(ret);
 		} catch (e) {
 			if (e instanceof MyError) {

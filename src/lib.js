@@ -223,7 +223,7 @@ lib.createConfigSet = function createConfigSet(name, global) {
 	return targetPath;
 };
 lib.fetchConfigSet = function fetchConfigSet(git_url, global, force) {
-	const tempPath = path.join(os.tmpdir(), 'jenv_fetch_temp');
+	const tempPath = path.join(os.tmpdir(), 'jenv_fetch_temp', git_url);
 	if (!fs.existsSync(tempPath)) {
 		mkdirp.sync(path.dirname(tempPath));
 		
@@ -252,6 +252,16 @@ lib.fetchConfigSet = function fetchConfigSet(git_url, global, force) {
 	
 	const targetPath = configSetPath(configSetName)[global ? 1 : 0];
 	if (fs.existsSync(targetPath)) {
+		if (!force) {
+			try {
+				const exists_config = JSON.parse(fs.readFileSync(installFile));
+				if (exists_config.name === configSetName) {
+					force = true;
+				}
+			} catch (e) {
+				throw new MyError(`the ID-file(.jsonenv) parse error:\n ${e.message}`);
+			}
+		}
 		if (force) {
 			fsUtils.rmdirsSync(targetPath);
 		} else {

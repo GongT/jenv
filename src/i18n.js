@@ -15,6 +15,9 @@ osLocale((err, locale) => {
 	}
 	
 	locale = locale.toLowerCase();
+	if (locale === 'posix') {
+		locale = 'en';
+	}
 	
 	let langFile = `../i18n/${locale}.json`;
 	if (!require('fs').existsSync(require('path').resolve(__dirname, langFile))) {

@@ -148,7 +148,18 @@ ${t('available_env')}:
 		}
 		
 		return lib.newEnv(requireConfigSetPath(), newConfigEnvName);
-	}
+	},
+	repl() {
+		const envName = lib.getCurrentDefault();
+		const config = lib.readEnvSync(envName);
+		lib.applyGlobalEnv(config);
+		
+		global.JsonEnv = config;
+		console.log('config stored in glboal.JsonEnv');
+		require('./repl');
+		
+		return 999;
+	},
 };
 
 function requireConfigSetPath(configSetName) {
