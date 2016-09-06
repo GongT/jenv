@@ -1,0 +1,37 @@
+{
+	"usage_base": "基本格式：",
+	
+	"usage_exec": "启动一个命令：",
+	"usage_shell": "启动终端",
+	"usage_repl": "启动node repl",
+	"usage_run_default": "使用默认环境运行命令",
+	"usage_run_with": "使用指定环境运行命令",
+	
+	"usage_local": "当前项目操作：",
+	"usage_config_set": "设置(显示)配置集",
+	"usage_config_default": "设置(显示)默认环境",
+	"usage_ls": "显示当前配置文件的内容",
+	"usage_status": "显示当前配置集、环境详情",
+	"usage_create_env": "创建一个新环境",
+	
+	"usage_config": "访问配置内容：",
+	"usage_get": "读取一个配置内容",
+	"usage_set": "写入一个配置内容",
+	
+	"usage_global": "全局操作：",
+	"usage_git_pull": "从git-url下载配置，并保存在本地",
+	"usage_create_set": "本地创建一个配置集（然后上传到git-url）",
+	"usage_config_set_remote": "设置或修改git-url",
+	"usage_git_upload": "上传配置集到远程服务器",
+	"usage_git_download": "从远程服务器下载配置集",
+	
+	"current_set": "配置集名称：    ",
+	"current_env": "默认环境名称：  ",
+	"configset_git_url": "配置集远程地址：   ",
+	"configset_save_path": "配置集文件路径：   ",
+	"available_env": "可用的环境列表：",
+	"not_set": "未设置",
+	"zero_length": "{沒有可用的环境}",
+	
+	"how_to_set_git": "使用 jenv --remote 'git://xxxx' 设置远程路径"
+}

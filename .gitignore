@@ -1,23 +1,5 @@
-# Logs
-*.log
-npm-debug.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-
-# node-waf configuration
-.lock-wscript
-
-# Dependency directories
-node_modules
-
-# Optional npm cache directory
-.npm
-
-# Optional REPL history
-.node_repl_history
-
-.idea
-.jsonenv
+.idea/
+node_modules/
+src/**.js
+dist/
+typings/

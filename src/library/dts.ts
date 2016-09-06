@@ -1,7 +1,9 @@
+import {ucfirst} from "./strings";
+import {readJsonFile} from "./json";
 const fs = require('fs');
 
-module.exports = function (targetFile) {
-	const config = require(targetFile);
+export function generateDefineTs(targetFile) {
+	const config = readJsonFile(targetFile);
 	
 	const text = loopObject(config, 'IJsonEnv');
 	
@@ -18,7 +20,7 @@ namespace global {
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';
 	// console.log('<- %s', dts);
 	fs.writeFileSync(dts, result, 'utf-8');
-};
+}
 
 function subObject(k, v, prepend) {
 	// console.log('subObject:', k);
@@ -72,11 +74,4 @@ function loopObject(object, objectName) {
 interface ${objectName} {
 	${content.join('\n\t')}
 }`
-}
-
-function ucfirst(str) {
-	if (!str) {
-		return '';
-	}
-	return str[0].toUpperCase() + str.substr(1);
 }

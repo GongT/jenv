@@ -1,0 +1,37 @@
+{
+	"usage_base": "basic usage: ",
+	
+	"usage_exec": "run a command: ",
+	"usage_shell": "start a shell",
+	"usage_repl": "start node repl",
+	"usage_run_default": "run command with default configfile",
+	"usage_run_with": "run command with specific configfile",
+	
+	"usage_local": "project command：",
+	"usage_config_set": "set or display configset name",
+	"usage_config_default": "set or display environment name",
+	"usage_ls": "inspect current configfile",
+	"usage_status": "show project jenv settings",
+	"usage_create_env": "create new environment for this project",
+	
+	"usage_config": "configset command: ",
+	"usage_get": "read a value from configfile",
+	"usage_set": "write a value to configfile",
+	"usage_config_set_remote": "set configset's git-url",
+	"usage_git_upload": "upload configset to remote",
+	"usage_git_download": "download configset from remote",
+	
+	"usage_global": "global command: ",
+	"usage_git_pull": "clone a exists configset from git remote",
+	"usage_create_set": "create a new configset, and upload to git remote",
+	
+	"current_set": "configset name:           ",
+	"current_env": "default environment name: ",
+	"configset_git_url": "configset remote url:  ",
+	"configset_save_path": "configset save path:   ",
+	"available_env": "available environments: ",
+	"not_set": "not set",
+	"zero_length": "{no available}",
+	
+	"how_to_set_git": "use jenv --remote 'git://xxxx' to set remote url"
+}

@@ -1,15 +1,14 @@
-const os = require('os');
-const lib = require('./lib');
-const nodeSpawnSync = require('child_process').spawnSync;
+import {platform}  from 'os';
+import {spawnSync} from 'child_process';
 
-module.exports = (args) => {
+export default function shellSpawnSync(args) {
 	if (args === 'shell') {
-		args = [os.platform() === 'win32' ? 'cmd.exe' : 'bash'];
+		args = [platform() === 'win32' ? 'cmd.exe' : 'bash'];
 	}
 	
 	console.log('::: %s', args.join(' '));
 	
-	const child = nodeSpawnSync(args[0], args.slice(1), {
+	const child = spawnSync(args[0], args.slice(1), {
 		stdio: 'inherit',
 		cwd: process.cwd(),
 		env: process.env,
@@ -17,12 +16,12 @@ module.exports = (args) => {
 	if (child) {
 		if (child.error) {
 			console.error(`can't run command "${args[0]}"\n  %s`, child.error.message);
-			return child.status || 255;
+			return child.status || 127;
 		} else {
 			return child.status;
 		}
 	} else {
 		console.error(`can't run command "${args[0]}"`);
-		return 255
+		return 127;
 	}
 };

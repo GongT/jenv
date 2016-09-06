@@ -1,34 +1,35 @@
+import {resolve} from "path";
 var osLocale = require('os-locale');
 
-let callback = [], t;
-module.exports = (cb) => {
-	if (t) {
-		cb(t);
+let callback = [];
+export default function installI18N(cb) {
+	if (global.t) {
+		cb();
 	} else {
 		callback.push(cb);
 	}
-};
+}
 
 osLocale((err, locale) => {
 	if (err) {
 		throw err;
 	}
 	
-	locale = locale.toLowerCase();
+	locale = locale.toLowerCase().replace(/_/g, '-');
 	if (locale === 'posix') {
-		locale = 'en';
+		locale = 'en-us';
 	}
 	
-	let langFile = `../i18n/${locale}.json`;
+	let langFile = localeFilePath(locale);
 	if (!require('fs').existsSync(require('path').resolve(__dirname, langFile))) {
 		console.warn(`Warn: no language file for ${locale}, fallback to en.`);
-		locale = 'en';
-		langFile = `../i18n/${locale}.json`;
+		locale = 'en-us';
+		langFile = localeFilePath(locale);
 	}
 	
-	t = getTextFn(locale, require(langFile));
+	global.t = getTextFn(locale, require(langFile));
 	callback.forEach((cb) => {
-		cb(t);
+		cb();
 	});
 });
 
@@ -41,4 +42,8 @@ function getTextFn(locale, data) {
 			return text.toUpperCase();
 		}
 	};
+}
+
+function localeFilePath(locale) {
+	return resolve(__dirname, `../../../i18n/${locale}.json`);
 }
