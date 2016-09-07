@@ -67,9 +67,15 @@ function getFileContent(dir, environmentList: string[]) {
 	return ret;
 }
 
-function parseFolder(itr, dir, environmentList) {
-	if (existsSync(resolve(dir, '.root'))) {
+function parseFolder(itr, dir, environmentList, root = true) {
+	if (root && existsSync(resolve(dir, '.root'))) {
+		if (existsSync(resolve(dir, '.environment'))) {
+			itr['.ENVIRONMENT'] = {};
+			extend(true, itr['.ENVIRONMENT'], getFileContent(resolve(dir, '.environment'), environmentList));
+			extend(true, itr, itr['.ENVIRONMENT']);
+		}
 		
+		extend(true, itr, getFileContent(resolve(dir, '.root'), environmentList));
 	} else {
 		extend(true, itr, getFileContent(dir, environmentList));
 	}
@@ -80,7 +86,7 @@ function parseFolder(itr, dir, environmentList) {
 		const subFile = resolve(dir, name);
 		if (lstatSync(subFile).isDirectory()) {
 			itr[name] = {};
-			parseFolder(itr[name], subFile, environmentList);
+			parseFolder(itr[name], subFile, environmentList, false);
 		}
 	});
 }

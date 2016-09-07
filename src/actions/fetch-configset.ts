@@ -13,8 +13,7 @@ import {gitclone} from "../library/git";
 export function fetchConfigSet(git_url, global, force) {
 	const tempPath = join(tmpdir(), 'jenv_fetch_temp', git_url);
 	if (!existsSync(tempPath)) {
-		mkdirpSync(dirname(tempPath));
-		
+		console.error('clone to %s', tempPath);
 		gitclone(tempPath, git_url, 'jsonenv');
 	}
 	
@@ -22,7 +21,7 @@ export function fetchConfigSet(git_url, global, force) {
 	const configSetName = config.name;
 	// temp prepare ok
 	
-	const targetPath = configSetPath(configSetName, global);
+	const targetPath = configSetPath(configSetName, global || false);
 	if (existsSync(targetPath)) {
 		if (!force) {
 			const exists_config = readIdFile(targetPath);
@@ -31,6 +30,7 @@ export function fetchConfigSet(git_url, global, force) {
 			}
 		}
 		if (force) {
+			console.error('rm -rf %s', targetPath);
 			rmdirsSync(targetPath);
 		} else {
 			throw new MyError(`target path ${targetPath} is already exists, please remove it first.`);

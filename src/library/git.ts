@@ -1,9 +1,9 @@
-import {execSync as nodeExecSync}from "child_process";
 import MyError from "./error";
-import {nodeSpawnSync} from "./spawn-sync";
+import {nodeSpawnSync, nodeExecSync} from "./spawn-sync";
+import {sync as mkdirpSync} from "mkdirp";
 
 export function gitcheck(path) {
-	const ret = nodeExecSync(`git branch --color=never`, {cwd: path, stdio: 'pipe'});
+	const ret = nodeExecSync(`git branch --color=never`, path);
 	if (!/\* jsonenv/.test(ret)) {
 		throw new MyError(`refuse to run in path ${path}: not a git repo on "jsonenv" branch`);
 	}
@@ -25,6 +25,9 @@ export function gitadd(dir, files = '.') {
 }
 
 export function gitcommit(dir, message = 'empty commit message') {
+	if (/working directory clean/.test(nodeExecSync('git status', dir))) {
+		return true;
+	}
 	const ret = nodeSpawnSync('git', ['commit', '-a', '-m', message], dir);
 	if (!ret) {
 		throw new MyError('run git command failed. (see above)');
@@ -40,12 +43,12 @@ export function gitremoteurl(dir, name, branch, url) {
 }
 
 export function gitremote(path) {
-	return nodeExecSync(`git remote get-url origin`, {cwd: path, stdio: 'pipe'});
+	return nodeExecSync(`git remote get-url origin`, path);
 }
 
 export function gitpush(dir, remote, branch) {
 	if (!nodeSpawnSync('git', ['push', '--set-upstream', remote, branch], dir)) {
-		console.error(`can't run "git push" command.`);
+		throw new MyError(`can't run "git push" command.`);
 	}
 }
 
@@ -71,7 +74,8 @@ export function gitbranch(path, branch) {
 }
 
 export function gitclone(path, url, branch) {
-	const ret = nodeSpawnSync('git', ['clone', '-b', branch, '--single-branch', url], path);
+	mkdirpSync(path);
+	const ret = nodeSpawnSync('git', ['clone', '-b', branch, '--single-branch', url, '.'], path);
 	if (!ret) {
 		throw new MyError('run git command failed. (see above)');
 	}

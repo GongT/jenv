@@ -20,7 +20,7 @@ ${t('usage_local')}
 ${t('usage_config')}
   jenv --config [-env] name                 ${t('usage_get')}
   jenv --config [-env] name value           ${t('usage_set')}
-  jenv --remote env_name [git_url]    ${t('usage_config_set_remote')}
+  jenv --remote [git_url]    ${t('usage_config_set_remote')}
   jenv --upload [set_name]            ${t('usage_git_upload')}
   jenv --download [set_name]          ${t('usage_git_download')}
 

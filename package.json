@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"start": "tsc -w",
-		"test": "mocha --bail bin/test.js || true"
+		"test": "mocha --timeout 10s --slow 1000 --bail bin/test.js || true"
 	},
 	"preferGlobal": true,
 	"repository": {

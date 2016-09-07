@@ -1,14 +1,12 @@
 import MyError from "../library/error";
 import {setRemote} from "../actions/set-remote";
 import {requireConfigSetPath} from "../library/path";
+import {getCurrentConfigSet} from "../actions/current-config";
 
-export default function remote(configSetName, remoteUrl) {
-	if (remoteUrl === undefined) {
-		if (/^[a-zA-Z0-9\-_]+$/.test(configSetName)) {
-			throw new MyError('env name must be /[a-zA-Z0-9\-_]+/');
-		}
-		remoteUrl = configSetName;
-		configSetName = undefined;
+export default function remote(remoteUrl) {
+	if(!remoteUrl){
+		console.error('remote-url is required');
+		return false;
 	}
-	return setRemote(requireConfigSetPath(configSetName), remoteUrl);
+	return setRemote(requireConfigSetPath(getCurrentConfigSet()), remoteUrl);
 }

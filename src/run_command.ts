@@ -2,11 +2,13 @@ import {resolve as pathResolve} from 'path';
 import usage from './actions/usage';
 
 module.exports = (command, args, options) => {
+	const commandFile = pathResolve(__dirname, `commands/${command}`);
 	let HandlerFunction;
 	try {
-		HandlerFunction = require(pathResolve(__dirname, `commands/${command}`)).default;
+		HandlerFunction = require(commandFile).default;
 	} catch (e) {
 		console.error(`unknown command "${command}"`);
+		console.error(`\t${e.message}`);
 		throw usage();
 	}
 	const ret = HandlerFunction.apply(options, args);

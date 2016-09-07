@@ -3,8 +3,12 @@ import {constant_name_style} from "../library/strings";
 export function applyGlobalEnv(config: JsonEnv) {
 	process.env.JENV_FILE_NAME = config.JENV_FILE_NAME; // ensure first
 	process.env.JENV_FILE_NAME_REL = config.JENV_FILE_NAME_REL;
-	Object.keys(config).forEach((key) => {
-		let value = config[key];
+	const env = config['.ENVIRONMENT'];
+	if (!env) {
+		return;
+	}
+	Object.keys(env).forEach((key) => {
+		let value = env[key];
 		if (value instanceof Date) {
 			value = value.toISOString();
 		} else if (value === null || value === undefined) {

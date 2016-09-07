@@ -1,5 +1,5 @@
-import {requireCurrentConfigSet} from "./require-current-configset";
 import {getAllEnv} from "./get-all-env";
+import {requireCurrentConfigSet} from "../library/current";
 
 export function configEnvExists(env) {
 	const cset = requireCurrentConfigSet();
