@@ -3,7 +3,7 @@ import {createConfigSet} from "../actions/create-configset";
 import remote from "./remote";
 import set from "./set";
 
-export default function init(newName, gitUrl) {
+export default function init(this: CmdLineConfig, newName, gitUrl) {
 	if (!newName) {
 		throw usage();
 	}
@@ -17,13 +17,13 @@ export default function init(newName, gitUrl) {
 	console.log('new config set saved to %s', savePath);
 	
 	if (gitUrl) {
-		remote(newName, gitUrl);
+		remote.call(this, newName, gitUrl);
 	} else {
 		console.log('  configure remote storage with "jenv --remote git@github.com:/yourname/yourproject"');
 	}
 	
 	if (!this['no-default']) {
-		set(newName);
+		set.call(this, newName);
 	}
 	
 	return !!savePath;

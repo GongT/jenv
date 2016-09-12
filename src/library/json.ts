@@ -13,10 +13,10 @@ export function readJsonFile(file) {
 	}
 }
 
-export function writeJsonFile(file, data) {
+export function writeJsonFile(file, data): boolean {
 	let str = JSON.stringify(data, null, 8);
 	str = str.replace(/^\s+/gm, function (m0) {
-		return (new Array(parseInt(m0.length / 8))).fill('\t').join('');
+		return (new Array(Math.ceil(m0.length / 8))).fill('\t').join('');
 	});
 	try {
 		console.error('<- %s', file);
@@ -25,7 +25,8 @@ export function writeJsonFile(file, data) {
 			console.error('<+ %s', dir);
 			mkdirpSync(dir);
 		}
-		return writeFileSync(file, str, 'utf-8');
+		writeFileSync(file, str, 'utf-8');
+		return true;
 	} catch (e) {
 		console.error(e.message);
 		return false;

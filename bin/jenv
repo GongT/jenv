@@ -1,4 +1,4 @@
 #!/bin/sh
 ':' // ; exec "$(command -v nodejs || command -v node)" "$0" "$@" ; exit
 
-require(require('path').resolve(__dirname, '../dist/src/bin'));
+require(require('path').resolve(__dirname, '../dist/bin'));

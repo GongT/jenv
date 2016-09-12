@@ -6,7 +6,9 @@ import {readJsonFile} from "./json";
 import MyError from "./error";
 import {getCurrentConfig} from "./current";
 
-export function configSetPath(envName, isGlobal?: boolean) {
+export function configSetPath(envName): string[];
+export function configSetPath(envName, isGlobal: boolean):string;
+export function configSetPath(envName, isGlobal?):string|string[] {
 	const local = resolve(process.cwd(), '.jsonenv/local');
 	const home = resolve(homedir(), '.jsonenv', envName);
 	if (isGlobal === true) {

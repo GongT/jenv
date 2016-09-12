@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es6",
+		"lib": ["es6"],
 		"moduleResolution": "node",
 		"noEmitOnError": false,
 		"noImplicitThis": true,
@@ -16,11 +17,13 @@
 		"pretty": true,
 		"sourceMap": true,
 		"baseUrl": "./",
-		"typeRoots": ["typings"],
-		"types": [],
-		"lib": ["es6"],
-		"outDir": "./dist",
-		"rootDir": "./src"
+		"typeRoots": [
+			"../typings", "../node_modules/@types"
+		],
+		"types": [
+		],
+		"outDir": "../dist",
+		"rootDir": "./"
 	},
-	"exclude": ["global.d.ts"]
+	"exclude": ["node_module", "./dist", "global.d.ts"]
 }

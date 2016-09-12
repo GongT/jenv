@@ -1,4 +1,4 @@
-import * as extend from 'extend';
+import extend = require('extend');
 import {readdirSync, lstatSync, existsSync} from "fs";
 import {resolve} from "path";
 
@@ -12,7 +12,7 @@ import {findConfigSetPath} from "../library/path";
 const TEMP_FILE = resolve(process.cwd(), './.jsonenv/', `_current_result.json`);
 
 export default function readEnvSync(environment) {
-	const result: JsonEnv = {
+	const result: JsonEnvClass = {
 		JENV_FILE_NAME: TEMP_FILE,
 		JENV_FILE_NAME_REL: TEMP_FILE.replace(process.cwd() + '', '.'),
 	};

@@ -1,3 +1,4 @@
+/// <reference path="../typings/index.d.ts" />
 /// <reference path="../global.d.ts" />
 
 import 'source-map-support/register';

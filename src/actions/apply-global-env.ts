@@ -1,6 +1,6 @@
 import {constant_name_style} from "../library/strings";
 
-export function applyGlobalEnv(config: JsonEnv) {
+export function applyGlobalEnv(config: JsonEnvClass) {
 	process.env.JENV_FILE_NAME = config.JENV_FILE_NAME; // ensure first
 	process.env.JENV_FILE_NAME_REL = config.JENV_FILE_NAME_REL;
 	const env = config['.ENVIRONMENT'];

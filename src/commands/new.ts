@@ -3,7 +3,7 @@ import {requireConfigSetPath} from "../library/path";
 import {requireCurrentConfigSet} from "../library/current";
 import {newEnvironment} from "../actions/new-env";
 
-export default function new_env(name, base = undefined) {
+export default function new_env(this:CmdLineConfig, name, base = undefined) {
 	if (!/^[a-zA-Z0-9\-_]+$/.test(name)) {
 		console.error('env name must be /[a-zA-Z0-9\-_]+/');
 		return false;

@@ -1,7 +1,7 @@
 import {getCurrentDefault} from "../actions/current-config";
 import readEnvSync from "../actions/read-env";
 import {applyGlobalEnv} from "../actions/apply-global-env";
-export default function repl() {
+export default function repl(this:CmdLineConfig) {
 	const envName = getCurrentDefault();
 	const config = readEnvSync(envName);
 	applyGlobalEnv(config);

@@ -45,5 +45,5 @@ function getTextFn(locale, data) {
 }
 
 function localeFilePath(locale) {
-	return resolve(__dirname, `../../../i18n/${locale}.json`);
+	return resolve(__dirname, `../../i18n/${locale}.json`);
 }

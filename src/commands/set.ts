@@ -3,7 +3,7 @@ import {getLocalConfigName} from "../actions/get-local-configset-name";
 import {requireConfigSetPath} from "../library/path";
 import MyError from "../library/error";
 
-export default function set(configSetName) {
+export default function set(this:CmdLineConfig, configSetName) {
 	if (configSetName) {
 		if ('local' === configSetName) {
 			configSetName = getLocalConfigName();

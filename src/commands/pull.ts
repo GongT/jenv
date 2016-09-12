@@ -2,7 +2,7 @@ import usage from "../actions/usage";
 import {fetchConfigSet} from "../actions/fetch-configset";
 import {setCurrentConfigSet} from "../actions/current-config";
 
-export default function pull(gitUrl) {
+export default function pull(this:CmdLineConfig, gitUrl) {
 	if (!gitUrl) {
 		throw usage();
 	}

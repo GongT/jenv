@@ -1,10 +1,51 @@
 declare const t: (s: string) => string;
 
-declare namespace global {
-	export var JsonEnv: JsonEnv;
-	export var t;
+
+interface Console {
+	assert(test?: boolean, message?: string, ...optionalParams: any[]): void;
+	clear(): void;
+	count(countTitle?: string): void;
+	debug(message?: string, ...optionalParams: any[]): void;
+	dir(value?: any, ...optionalParams: any[]): void;
+	dirxml(value: any): void;
+	error(message?: any, ...optionalParams: any[]): void;
+	group(groupTitle?: string): void;
+	groupCollapsed(groupTitle?: string): void;
+	groupEnd(): void;
+	info(message?: any, ...optionalParams: any[]): void;
+	log(message?: any, ...optionalParams: any[]): void;
+	profile(reportName?: string): void;
+	profileEnd(): void;
+	time(timerName?: string): void;
+	timeEnd(timerName?: string): void;
+	trace(message?: any, ...optionalParams: any[]): void;
+	warn(message?: any, ...optionalParams: any[]): void;
 }
-interface JsonEnv {
+
+
+declare var console: Console;
+
+declare namespace NodeJS {
+	export interface Global {
+		JsonEnv: JsonEnvClass;
+		t;
+	}
+	export interface WritableStream {
+		fd?: number;
+	}
+}
+
+interface WritableStream {
+	fd: number;
+}
+
+interface CmdLineConfig {
+	create?: boolean;
+	force?: boolean;
+	global?: boolean;
+}
+
+interface JsonEnvClass {
 	JENV_FILE_NAME: string;
 	JENV_FILE_NAME_REL: string;
 	[id: string]: any;

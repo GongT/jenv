@@ -8,4 +8,6 @@ export function setRemote(path, newRemote) {
 	gitcommit(path, 'set-remote');
 	
 	gitpush(path, 'origin', 'jsonenv');
+	
+	return true;
 }

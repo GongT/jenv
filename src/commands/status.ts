@@ -3,7 +3,7 @@ import {getAllEnv} from "../actions/get-all-env";
 import {requireConfigSetPath} from "../library/path";
 import {gitremote} from "../library/git";
 
-export default function status() {
+export default function status(this:CmdLineConfig) {
 	const env = getCurrentDefault();
 	const set = getCurrentConfigSet();
 	const setPath = set ? requireConfigSetPath(set) : null;
