@@ -13,8 +13,11 @@ module JsonEnvConfigModule {
 	${text}
 }
 
-namespace global {
-	var JsonEnv:JsonEnvConfigModule.IJsonEnv;
+declare const JsonEnv: JsonEnvConfigModule.IJsonEnv;
+declare namespace NodeJS {
+	export interface Global {
+		JsonEnv: JsonEnvConfigModule.IJsonEnv;
+	}
 }
 `;
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';

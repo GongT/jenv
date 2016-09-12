@@ -1,6 +1,6 @@
 {
 	"name": "json-env-cli",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"description": "save config to git (as json) and set (some of) them as environment variables",
 	"main": "./simple-package/require.js",
 	"bin": {
@@ -10,7 +10,7 @@
 		"start": "tsc -w -p src",
 		"build": "tsc -p src",
 		"test": "mocha --timeout 10s --slow 1000 --bail bin/test.js || true",
-		"post-install": "esc git || true"
+		"post-install": "typings install ; cli-depend git || true"
 	},
 	"preferGlobal": true,
 	"repository": {

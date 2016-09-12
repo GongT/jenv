@@ -1,1 +1,1 @@
-global.JsonEnv = require('./require');
+global.JsonEnv = require('./require')();
