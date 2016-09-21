@@ -1,4 +1,4 @@
-import {ucfirst} from "./strings";
+import {ucfirst, constant_name_style} from "./strings";
 import {readJsonFile} from "./json";
 const fs = require('fs');
 
@@ -6,11 +6,18 @@ export function generateDefineTs(targetFile) {
 	const config = readJsonFile(targetFile);
 	
 	const text = loopObject(config, 'IJsonEnv');
+	const envText = envObject(config['.ENVIRONMENT'], 'IJsonProcessEnv');
 	
 	const result = `// GENERATED FILE
 
-module JsonEnvConfigModule {
-	${text}
+declare module JsonEnvConfigModule {
+	${text.replace(/\n/g, '\n\t')}
+
+	${envText.replace(/\n/g, '\n\t')}
+}
+
+interface IProcessEnv extends JsonEnvConfigModule.IJsonProcessEnv {
+	[id: string]: string;
 }
 
 declare const JsonEnv: JsonEnvConfigModule.IJsonEnv;
@@ -18,10 +25,13 @@ declare namespace NodeJS {
 	export interface Global {
 		JsonEnv: JsonEnvConfigModule.IJsonEnv;
 	}
+	/*export interface Process {
+		env: IProcessEnv;
+	}*/
 }
 `;
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';
-	// console.log('<- %s', dts);
+	console.error('<- %s', dts);
 	fs.writeFileSync(dts, result, 'utf-8');
 }
 
@@ -53,12 +63,33 @@ function subArray(k, v, prepend) {
 	return `[${t}]`;
 }
 
+function envObject(object, objectName) {
+	// console.log('envObject:', objectName);
+	const content = [];
+	
+	Object.keys(object).forEach((k) => {
+		const key = constant_name_style(k);
+		const v = object[k];
+		let t = typeof v;
+		// console.log('  -> ', k, ':', t);
+		
+		content.unshift(`${key}: string; // = ${JSON.stringify('' + v)};`);
+	});
+	
+	return `interface ${objectName} {
+	${content.join('\n\t')}
+}`
+}
+
 function loopObject(object, objectName) {
 	// console.log('loopObject:', objectName);
 	const prepend = [];
 	const content = [];
 	
 	Object.keys(object).forEach((k) => {
+		if (/^\./.test(k)) {
+			return;
+		}
 		const v = object[k];
 		let t = typeof v;
 		// console.log('  -> ', k, ':', t);

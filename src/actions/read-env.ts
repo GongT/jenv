@@ -50,6 +50,10 @@ export default function readEnvSync(environment) {
 function getFileContent(dir, environmentList: string[]) {
 	const ret = {};
 	
+	if (existsSync(resolve(dir, '.empty'))) {
+		return {};
+	}
+	
 	let found = false;
 	environmentList.forEach(function (environment) {
 		const confFile = resolve(dir, `${environment}.json`);
