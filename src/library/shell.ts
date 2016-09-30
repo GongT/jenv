@@ -1,12 +1,15 @@
-import {platform}  from 'os';
-import {spawnSync} from 'child_process';
+import {platform} from "os";
+import {spawnSync} from "child_process";
+import {prettyPrint} from "./output";
 
 export default function shellSpawnSync(args) {
 	if (args === 'shell') {
 		args = [platform() === 'win32' ? 'cmd.exe' : 'bash'];
 	}
 	
-	console.log('::: %s', args.join(' '));
+	if (prettyPrint) {
+		console.log('::: %s', args.join(' '));
+	}
 	
 	const child = spawnSync(args[0], args.slice(1), {
 		stdio: 'inherit',

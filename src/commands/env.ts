@@ -3,9 +3,9 @@ import MyError from "../library/error";
 import new_env from "./new";
 import {setCurrentDefault, getCurrentDefault} from "../actions/current-config";
 
-export default function env(this:CmdLineConfig, envValue, base) {
+export default function env(this: CmdLineConfig, envValue, base) {
 	if (envValue) {
-		if (!configEnvExists(envValue)) {
+		if (!configEnvExists(envValue, true)) {
 			if (this.create) {
 				new_env.call(this, envValue, base);
 			} else {

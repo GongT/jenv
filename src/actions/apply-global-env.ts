@@ -7,6 +7,13 @@ export function applyGlobalEnv(config: JsonEnvClass) {
 	if (!env) {
 		return;
 	}
+	
+	require('util')._extend(process.env, env);
+}
+
+export function changeVariableNames(config) {
+	const env = config['.ENVIRONMENT'];
+	const ret = {};
 	Object.keys(env).forEach((key) => {
 		let value = env[key];
 		if (value instanceof Date) {
@@ -21,6 +28,7 @@ export function applyGlobalEnv(config: JsonEnvClass) {
 			console.error('warn: not apply to environment variable - %s: value is not scalar', key);
 			return; // no object will assign
 		}
-		process.env[constant_name_style(key.toString())] = value;
+		ret[constant_name_style(key.toString())] = value;
 	});
+	config['.ENVIRONMENT'] = ret;
 }

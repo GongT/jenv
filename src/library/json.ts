@@ -1,7 +1,7 @@
-import {readFileSync, writeFileSync} from "fs";
-import {existsSync} from "fs";
+import {readFileSync, writeFileSync, existsSync} from "fs";
 import {dirname} from "path";
 import {sync as mkdirpSync} from "mkdirp";
+import {prettyPrint} from "./output";
 
 export function readJsonFile(file) {
 	try {
@@ -19,7 +19,9 @@ export function writeJsonFile(file, data): boolean {
 		return (new Array(Math.ceil(m0.length / 8))).fill('\t').join('');
 	});
 	try {
-		console.error('<- %s', file);
+		if (prettyPrint) {
+			console.error('<- %s', file);
+		}
 		const dir = dirname(file);
 		if (!existsSync(dir)) {
 			console.error('<+ %s', dir);

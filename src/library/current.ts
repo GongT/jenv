@@ -1,7 +1,6 @@
 import {existsSync} from "fs";
-import {sync as mkdirpSync} from 'mkdirp';
+import {sync as mkdirpSync} from "mkdirp";
 import {dirname, resolve} from "path";
-
 import {readJsonFile, writeJsonFile} from "./json";
 import MyError from "./error";
 
@@ -31,7 +30,7 @@ export function writeCurrentEnv() {
 export function requireCurrentEnvironment() {
 	const cenv = getCurrentConfig().env;
 	if (!cenv) {
-		throw new MyError('current environment not set');
+		throw new MyError(`current environment not set. (${DEFAULT_FILE})`);
 	}
 	return cenv;
 }
@@ -39,7 +38,7 @@ export function requireCurrentEnvironment() {
 export function requireCurrentConfigSet() {
 	const cset = getCurrentConfig().set;
 	if (!cset) {
-		throw new MyError('current configset not set');
+		throw new MyError('current configset not set. (${DEFAULT_FILE})');
 	}
 	return cset;
 }

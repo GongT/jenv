@@ -4,10 +4,10 @@ import {getCurrentDefault} from "../actions/current-config";
 import readEnvSync from "../actions/read-env";
 import MyError from "../library/error";
 
-export default function ls(this:CmdLineConfig, envName) {
+export default function show(this:CmdLineConfig, envName) {
 	envName = envName || getCurrentDefault();
 	if (!envName) {
-		throw new MyError('no default config. use "jenv --default" to set it. or specify a config name.');
+		throw new MyError('no default config. use "jenv --env" to set it. or specify a config name.');
 	}
 	const config = readEnvSync(envName);
 	

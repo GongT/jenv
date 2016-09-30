@@ -1,11 +1,14 @@
 import {spawnSync, execSync, SpawnSyncOptions, ExecSyncOptions} from "child_process";
+import {prettyPrint} from "./output";
 const extend = require('util')._extend;
 
 const env_english = extend({}, process.env);
 env_english.LANG = 'en_US.utf-8';
 
 export function nodeExecSync(command: string, path: string, input: string = ''): string {
-	console.error('::: ', command);
+	if (prettyPrint) {
+		console.error('::: ', command);
+	}
 	
 	return execSync(command, <ExecSyncOptions>{
 		cwd: path,
@@ -13,7 +16,7 @@ export function nodeExecSync(command: string, path: string, input: string = ''):
 		encoding: 'utf-8',
 		env: env_english,
 		input: input
-	}).toString('utf-8');
+	}).toString('utf-8').trim();
 }
 
 export function nodeSpawnSync(cmd: string, args: string[], options: SpawnSyncOptions = {}) {
@@ -28,7 +31,9 @@ export function nodeSpawnSync(cmd: string, args: string[], options: SpawnSyncOpt
 		options.env = env_english;
 	}
 	
-	console.error('::: ', cmd, args.join(' '));
+	if (prettyPrint) {
+		console.error('::: ', cmd, args.join(' '));
+	}
 	
 	const ret = spawnSync(cmd, args, options);
 	return ret.status === 0;

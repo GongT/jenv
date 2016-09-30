@@ -10,7 +10,7 @@
 	"usage_local": "当前项目操作：",
 	"usage_config_set": "设置(显示)配置集",
 	"usage_config_default": "设置(显示)默认环境",
-	"usage_ls": "显示当前配置文件的内容",
+	"usage_show": "显示当前配置文件的内容",
 	"usage_status": "显示当前配置集、环境详情",
 	"usage_create_env": "创建一个新环境",
 	

@@ -95,7 +95,7 @@ drwxr-xr-x.   3 GongT GongT  4096 Jul 20 15:53 bin
 #### init settings storage
 ```bash
 [root@localhost /data/my-project1]# jenv --init my-config git@git.github.com/GongT/my-config.git
-[root@localhost /data/my-project1]# jenv --default dev
+[root@localhost /data/my-project1]# jenv --env dev
 ## now edit config file (dev.json) with editor
 [root@localhost /data/my-project1]# jenv npm start
 ```
@@ -114,25 +114,25 @@ drwxr-xr-x.   3 GongT GongT  4096 Jul 20 15:53 bin
 #### share with other projects
 ```bash
 [root@localhost /data/my-project2]# jenv --pull git@git.github.com/GongT/my-config.git
-[root@localhost /data/my-project2]# jenv --default dev
+[root@localhost /data/my-project2]# jenv --env dev
 [root@localhost /data/my-project2]# jenv python ./start.py
 ```
 
 #### use in another project
 ```bash
 [root@localhost /data/business-project]# jenv --pull git@git.github.com/group/private-config.git
-[root@localhost /data/business-project]# jenv --default dev
+[root@localhost /data/business-project]# jenv --env dev
 [root@localhost /data/business-project]# jenv ./start.sh
 ```
 
 #### use in different server
 ```bash
 [root@server1 /data/business-project]# jenv --pull git@git.github.com/group/private-config.git
-[root@server1 /data/business-project]# jenv --default china-server-config
+[root@server1 /data/business-project]# jenv --env china-server-config
 [root@server1 /data/business-project]# jenv docker build
 
 [root@server2 /data/business-project]# jenv --pull git@git.github.com/group/private-config.git
-[root@server2 /data/business-project]# jenv --default us-west-server-config
+[root@server2 /data/business-project]# jenv --env us-west-server-config
 [root@server2 /data/business-project]# jenv docker build
 ```
 

@@ -10,7 +10,7 @@
 	"usage_local": "project command：",
 	"usage_config_set": "set or display configset name",
 	"usage_config_default": "set or display environment name",
-	"usage_ls": "inspect current configfile",
+	"usage_show": "inspect current configfile",
 	"usage_status": "show project jenv settings",
 	"usage_create_env": "create new environment for this project",
 	

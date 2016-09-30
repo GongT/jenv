@@ -1,6 +1,5 @@
 declare const t: (s: string) => string;
 
-
 interface Console {
 	assert(test?: boolean, message?: string, ...optionalParams: any[]): void;
 	clear(): void;
@@ -22,7 +21,6 @@ interface Console {
 	warn(message?: any, ...optionalParams: any[]): void;
 }
 
-
 declare var console: Console;
 
 declare namespace NodeJS {
@@ -43,6 +41,7 @@ interface CmdLineConfig {
 	create?: boolean;
 	force?: boolean;
 	global?: boolean;
+	json?: boolean;
 }
 
 interface JsonEnvClass {

@@ -139,7 +139,7 @@ describeStorage('print project configfile', function () {
 	
 	let defaultConfig;
 	it(`can print configfile from "default"`, function () {
-		defaultConfig = command(['jenv', '--ls']).will.success().and
+		defaultConfig = command(['jenv', '--show']).will.success().and
 				.stdout.to.be.a.jsonObject.value();
 		testEnvConfig(defaultConfig, 1, 2);
 	});
@@ -155,12 +155,12 @@ describeStorage('print project configfile', function () {
 	});
 	
 	it(`can print configfile from "${randomEnv1}" same as default`, function () {
-		const subConfig1 = command(['jenv', '--ls', randomEnv1]).will.success.and
+		const subConfig1 = command(['jenv', '--show', randomEnv1]).will.success.and
 				.stdout.to.be.a.jsonObject.value();
 		testEnvConfig(subConfig1, 1, 2);
 	});
 	it(`can print configfile from "${randomEnv2}"`, function () {
-		const subConfig2 = command(['jenv', '--ls', randomEnv2]).will.success.and
+		const subConfig2 = command(['jenv', '--show', randomEnv2]).will.success.and
 				.stdout.to.be.a.jsonObject.value();
 		testEnvConfig(subConfig2, 'a', 'b');
 	});
@@ -215,7 +215,7 @@ describeStorage('upload and download and pull', function () {
 		
 		command(['jenv', '--pull', store], { cwd: otherDir }).will.success();
 		
-		const data = command(['jenv', '--ls', 'default'], { cwd: otherDir }).will.success().and
+		const data = command(['jenv', '--show', 'default'], { cwd: otherDir }).will.success().and
 				.stdout.to.be.a.jsonObject.value();
 		
 		testEnvConfig(data, 1, 2);
@@ -227,7 +227,7 @@ describeStorage('upload and download and pull', function () {
 	it('can download', function () {
 		command(['jenv', '--download']).will.success();
 		
-		const data = command(['jenv', '--ls']).will.success().and
+		const data = command(['jenv', '--show']).will.success().and
 				.stdout.to.be.a.jsonObject.value();
 		
 		testEnvConfig(data, 'a', 'b');

@@ -1,5 +1,6 @@
 import {ucfirst, constant_name_style} from "./strings";
 import {readJsonFile} from "./json";
+import {prettyPrint} from "./output";
 const fs = require('fs');
 
 export function generateDefineTs(targetFile) {
@@ -31,7 +32,9 @@ declare namespace NodeJS {
 }
 `;
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';
-	console.error('<- %s', dts);
+	if (prettyPrint) {
+		console.error('<- %s', dts);
+	}
 	fs.writeFileSync(dts, result, 'utf-8');
 }
 

@@ -1,13 +1,14 @@
 import extend = require('extend');
 import {readdirSync, lstatSync, existsSync} from "fs";
 import {resolve} from "path";
-
-import MyError from '../library/error';
-import {getCurrentConfigSet} from './current-config';
+import MyError from "../library/error";
+import {getCurrentConfigSet} from "./current-config";
 import {writeJsonFile, readJsonFile} from "../library/json";
 import {generateDefineTs} from "../library/dts";
 import {getEnvironmentMetaData} from "./get-env-meta";
 import {findConfigSetPath} from "../library/path";
+import {prettyPrint} from "../library/output";
+import {changeVariableNames} from "./apply-global-env";
 
 const TEMP_FILE = resolve(process.cwd(), './.jsonenv/', `_current_result.json`);
 
@@ -41,6 +42,8 @@ export default function readEnvSync(environment) {
 	
 	parseFolder(result, setPath, inheritList.reverse());
 	
+	changeVariableNames(result);
+	
 	writeJsonFile(TEMP_FILE, result);
 	generateDefineTs(TEMP_FILE);
 	
@@ -59,7 +62,9 @@ function getFileContent(dir, environmentList: string[]) {
 		const confFile = resolve(dir, `${environment}.json`);
 		if (existsSync(confFile)) {
 			found = true;
-			console.error('-> %s', confFile);
+			if (prettyPrint) {
+				console.error('-> %s', confFile);
+			}
 			extend(ret, readJsonFile(confFile));
 		}
 	});
