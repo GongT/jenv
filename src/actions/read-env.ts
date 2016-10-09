@@ -44,6 +44,13 @@ export default function readEnvSync(environment) {
 	
 	changeVariableNames(result);
 	
+	result.__config = {
+		set: setName,
+		path: setPath,
+		env: environment,
+		meta: meta
+	};
+	
 	writeJsonFile(TEMP_FILE, result);
 	generateDefineTs(TEMP_FILE);
 	

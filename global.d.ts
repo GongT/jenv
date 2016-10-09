@@ -45,6 +45,7 @@ interface CmdLineConfig {
 }
 
 interface JsonEnvClass {
+	__config?: any;
 	JENV_FILE_NAME: string;
 	JENV_FILE_NAME_REL: string;
 	[id: string]: any;
