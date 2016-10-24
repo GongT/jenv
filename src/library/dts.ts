@@ -76,7 +76,7 @@ function envObject(object, objectName) {
 		let t = typeof v;
 		// console.log('  -> ', k, ':', t);
 		
-		content.unshift(`${key}: string; // = ${JSON.stringify('' + v)};`);
+		content.unshift(`${wrapKey(key)}: string; // = ${JSON.stringify('' + v)};`);
 	});
 	
 	return `interface ${objectName} {
@@ -103,7 +103,7 @@ function loopObject(object, objectName) {
 			t = subObject(k, v, prepend);
 		}
 		
-		content.unshift(`${k}: ${t};`);
+		content.unshift(`${wrapKey(k)}: ${t};`);
 	});
 	
 	return `${prepend.join('\n\t')}
@@ -111,4 +111,12 @@ function loopObject(object, objectName) {
 interface ${objectName} {
 	${content.join('\n\t')}
 }`
+}
+
+function wrapKey(n) {
+	if (/^[a-z_$][a-z_$0-9]/i.test(n)) {
+		return n;
+	} else {
+		return JSON.stringify(n);
+	}
 }

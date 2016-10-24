@@ -1,14 +1,13 @@
 /// <reference path="../typings/index.d.ts" />
 /// <reference path="../global.d.ts" />
 
-import 'source-map-support/register';
-
-import usage from './actions/usage'
-import installI18N from './library/i18n';
-import {platform} from 'os';
-import MyError from './library/error';
-import readEnvSync from './actions/read-env';
-import {getCurrentDefault} from './actions/current-config';
+import "source-map-support/register";
+import usage from "./actions/usage";
+import installI18N from "./library/i18n";
+import {platform} from "os";
+import MyError from "./library/error";
+import readEnvSync from "./actions/read-env";
+import {getCurrentDefault} from "./actions/current-config";
 import shellSpawnSync from "./library/shell";
 import {applyGlobalEnv} from "./actions/apply-global-env";
 
@@ -62,7 +61,7 @@ installI18N(() => {
 		} catch (e) {
 			if (e instanceof MyError) {
 				if (e.message !== 'ignore') {
-					console.error(e.stack);
+					console.error(e.message);
 				}
 				process.exit(1);
 			} else {
@@ -82,7 +81,7 @@ installI18N(() => {
 		try {
 			config = readEnvSync(envName);
 		} catch (err) {
-			console.error(`can't load environment "${envName}":\n    ${err.stack}`);
+			console.error(`can't load environment "${envName}":\n    ${err.message}`);
 			process.exit(1);
 		}
 		
