@@ -10,31 +10,34 @@ import {getAllEnv} from "../actions/get-all-env";
 export default function list(this: CmdLineConfig, type) {
 	type = type.toLowerCase();
 	switch (type) {
-		case 'env':
-			if (prettyPrint) {
-				console.error('available environments in current config set:');
-			}
-			
-			const envList: string[] = getAllEnv(requireCurrentConfigSet());
-			envList.forEach((name) => {
-				pretty(name)
-			});
-			break;
-		case 'set':
-			if (prettyPrint) {
-				console.error('available config set in this system:');
-			}
-			const list = [];
-			const [localStorage, homeStorage] = configSetPath('.');
-			
-			test_print(localStorage);
+	case 'env':
+		if (prettyPrint) {
+			console.error('available environments in current config set:');
+		}
+		
+		const envList: string[] = getAllEnv(requireCurrentConfigSet());
+		envList.forEach((name) => {
+			pretty(name)
+		});
+		break;
+	case 'set':
+		if (prettyPrint) {
+			console.error('available config set in this system:');
+		}
+		const list = [];
+		const [localStorage, homeStorage] = configSetPath('.');
+		
+		test_print(localStorage);
+		
+		if (existsSync(homeStorage)) {
 			readdirSync(homeStorage).forEach((name) => {
 				test_print(resolve(homeStorage, name));
 			});
-			
-			break;
-		default:
-			throw new MyError('Usage: \n   jenv --list set\n or\n   jenv --list env');
+		}
+		
+		break;
+	default:
+		throw new MyError('Usage: \n   jenv --list set\n or\n   jenv --list env');
 	}
 	if (prettyPrint) {
 		console.error('');
