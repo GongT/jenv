@@ -9,7 +9,11 @@ export default function pull(this: CmdLineConfig, gitUrl) {
 	try {
 		const {name, path} = fetchConfigSet(gitUrl, this.global, this.force);
 		console.log('pull success: the config set is saved to %s', path);
-		return setCurrentConfigSet(name);
+		if (setCurrentConfigSet(name)) {
+			return 0;
+		} else {
+			return 1
+		}
 	} catch (e) {
 		console.error(e.stack);
 		console.error(`
