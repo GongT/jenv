@@ -40,7 +40,7 @@ declare namespace NodeJS {
 
 function subObject(k, v, prepend) {
 	// console.log('subObject:', k);
-	const subName = 'I' + ucfirst(k) + 'Config';
+	const subName = 'I' + wrapJsName(k) + 'Config';
 	const subContent = loopObject(v, subName);
 	
 	prepend.push(subContent);
@@ -114,9 +114,17 @@ interface ${objectName} {
 }
 
 function wrapKey(n) {
-	if (/^[a-z_$][a-z_$0-9]/i.test(n)) {
+	console.log(n)
+	if (/^[a-z_$][a-z_$0-9]*$/i.test(n)) {
 		return n;
 	} else {
 		return JSON.stringify(n);
 	}
+}
+function wrapJsName(s: string) {
+	s = ucfirst(s);
+	s = s.replace(/[-_]([a-z])/g, function (m0, chr) {
+		return chr.toUpperCase();
+	});
+	return s;
 }
