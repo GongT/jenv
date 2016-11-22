@@ -72,7 +72,7 @@ function getFileContent(dir, environmentList: string[]) {
 			if (prettyPrint) {
 				console.error('-> %s', confFile);
 			}
-			extend(ret, readJsonFile(confFile));
+			extend(true, ret, readJsonFile(confFile));
 		}
 	});
 	

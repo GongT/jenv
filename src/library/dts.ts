@@ -114,7 +114,6 @@ interface ${objectName} {
 }
 
 function wrapKey(n) {
-	console.log(n)
 	if (/^[a-z_$][a-z_$0-9]*$/i.test(n)) {
 		return n;
 	} else {
