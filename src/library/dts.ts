@@ -70,6 +70,9 @@ function envObject(object, objectName) {
 	// console.log('envObject:', objectName);
 	const content = [];
 	
+	if (object === null || object === undefined) {
+		return 'type ' + objectName + ' = ' + object + ';';
+	}
 	Object.keys(object).forEach((k) => {
 		const key = constant_name_style(k);
 		const v = object[k];
@@ -89,6 +92,9 @@ function loopObject(object, objectName) {
 	const prepend = [];
 	const content = [];
 	
+	if (object === null || object === undefined) {
+		return 'type ' + objectName + ' = ' + object + ';';
+	}
 	Object.keys(object).forEach((k) => {
 		if (/^\./.test(k)) {
 			return;
