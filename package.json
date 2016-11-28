@@ -1,6 +1,6 @@
 {
 	"name": "@gongt/jenv",
-	"version": "2.1.4",
+	"version": "2.1.5",
 	"description": "save config to git (as json) and set (some of) them as environment variables",
 	"main": "./simple-package/require.js",
 	"bin": {
@@ -24,6 +24,11 @@
 	},
 	"homepage": "https://github.com/GongT/jenv#readme",
 	"dependencies": {
+		"@types/chai": "^3.4.34",
+		"@types/extend": "^2.0.30",
+		"@types/mkdirp": "^0.3.29",
+		"@types/mocha": "^2.2.33",
+		"@types/node": "^6.0.51",
 		"extend": "^3.0.0",
 		"mkdirp": "^0.5.1",
 		"nodejs-fs-utils": "^1.0.26",
