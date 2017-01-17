@@ -1,6 +1,7 @@
-import {createHash} from 'crypto';
+import {createHash} from "crypto";
 
 export function ucfirst(str) {
+	str = str.trim();
 	if (!str) {
 		return '';
 	}
