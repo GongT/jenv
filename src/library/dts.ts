@@ -9,7 +9,7 @@ export function generateDefineTs(targetFile) {
 	const mainGen = new TypescriptDeclarationGenerator(config, 'JsonEnv');
 	const envGen = new TypescriptDeclarationGenerator(config['.ENVIRONMENT'], 'ProcessEnv');
 	
-	const result = `// GENERATED FILE
+	const oldGeneration = `// GENERATED FILE
 
 declare module JsonEnvConfigModule {
 	type UndefinedType = undefined;
@@ -23,6 +23,7 @@ ${mainGen.interfaces.replace(/^/mg, '\t')}
 ${envGen.interfaces.replace(/^/mg, '\t')}
 }
 
+export const JsonEnv: JsonEnvConfigModule.${mainGen.mainType};
 declare const JsonEnv: JsonEnvConfigModule.${mainGen.mainType};
 declare namespace NodeJS {
 	export interface Global {
@@ -37,7 +38,27 @@ declare namespace NodeJS {
 	if (prettyPrint) {
 		console.error('<- %s', dts);
 	}
-	fs.writeFileSync(dts, result, 'utf-8');
+	fs.writeFileSync(dts, oldGeneration, 'utf-8');
+	
+	const newGeneration = `// GENERATED FILE
+
+type UndefinedType = undefined;
+type NumberType = number;
+type BooleanType = boolean;
+type StringType = string;
+type SymbolType = symbol;
+	
+${mainGen.interfaces.replace(/^/mg, '\t')}
+	
+${envGen.interfaces.replace(/^/mg, '\t')}
+
+export const JsonEnv: ${mainGen.mainType} = <any>{};
+`;
+	const newDts = targetFile.replace(/\.js(on)?$/, '') + '.ts';
+	if (prettyPrint) {
+		console.error('<- %s', newDts);
+	}
+	fs.writeFileSync(newDts, newGeneration, 'utf-8');
 }
 
 export class TypescriptDeclarationGenerator {
@@ -55,18 +76,25 @@ export class TypescriptDeclarationGenerator {
 		this.current = object;
 		this.currentName = name;
 		
-		const type = this.createObjectType();
+		const type = this.createObjectType(true);
 		
 		this.interfaces = this.interfaceList.join('\n\n');
 		this.mainType = type;
 	}
 	
-	private createObjectType(type?) {
-		const objectName = this.createUniqueName(type);
+	private createObjectType(root = false) {
+		const objectName = this.createUniqueName();
 		
-		this.interfaceList.unshift(`interface ${objectName} {
+		if (root) {
+			this.interfaceList.unshift(`interface ${objectName} {
+	".ENVIRONMENT": {[id: string]: string};
 	${this.createObjectDefine()}
 }`);
+		} else {
+			this.interfaceList.unshift(`interface ${objectName} {
+	${this.createObjectDefine()}
+}`);
+		}
 		
 		return objectName;
 	}
