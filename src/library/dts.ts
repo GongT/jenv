@@ -23,7 +23,6 @@ ${mainGen.interfaces.replace(/^/mg, '\t')}
 ${envGen.interfaces.replace(/^/mg, '\t')}
 }
 
-export const JsonEnv: JsonEnvConfigModule.${mainGen.mainType};
 declare const JsonEnv: JsonEnvConfigModule.${mainGen.mainType};
 declare namespace NodeJS {
 	export interface Global {
