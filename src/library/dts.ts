@@ -15,6 +15,7 @@ declare module JsonEnvConfigModule {
 	type UndefinedType = undefined;
 	type NumberType = number;
 	type BooleanType = boolean;
+	type NullType = null;
 	type StringType = string;
 	type SymbolType = symbol;
 	
