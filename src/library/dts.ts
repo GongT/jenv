@@ -167,7 +167,7 @@ export class TypescriptDeclarationGenerator {
 		console.error(createdName);
 		
 		this.nameRegistry[createdName] = true;
-		return createdName;
+		return createdName.replace(/[^a-zA-Z0-9_$]/g, '_');
 	}
 	
 	private currentBasicType(): string {
