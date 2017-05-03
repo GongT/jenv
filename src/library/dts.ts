@@ -157,14 +157,14 @@ export class TypescriptDeclarationGenerator {
 	
 	private createUniqueName(type: string = 'Config') {
 		let result = this.currentName;
-		process.stderr.write(`[${this.objectPathStack.join(',')}]${result}:  `);
+		// process.stderr.write(`[${this.objectPathStack.join(',')}]${result}:  `);
 		const stack = this.objectPathStack.slice();
 		let createdName = TypescriptDeclarationGenerator.wrapJsName(`${result}${type}`);
 		while (this.nameRegistry[createdName]) {
 			result = (stack.pop() || '') + '_' + result;
 			createdName = TypescriptDeclarationGenerator.wrapJsName(`${result}${type}`);
 		}
-		console.error(createdName);
+		// console.error(createdName);
 		
 		this.nameRegistry[createdName] = true;
 		return createdName.replace(/[^a-zA-Z0-9_$]/g, '_');
