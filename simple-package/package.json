@@ -1,6 +1,6 @@
 {
 	"name": "@gongt/jenv-data",
-	"version": "1.2.5",
+	"version": "1.2.6",
 	"description": "load json from `json-env-cli`",
 	"main": "./require.js",
 	"repository": {
