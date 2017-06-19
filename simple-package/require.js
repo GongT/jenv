@@ -15,7 +15,7 @@ module.exports = function () {
 
 module.exports.load = module.exports;
 let data;
-Object.defineProperty(module.exports, 'data', {
+Object.defineProperty(module.exports, 'JsonEnv', {
 	getter() {
 		return data ? data :
 				data = module.exports();
