@@ -13,4 +13,15 @@ module.exports = function () {
 	return require(configFilePath);
 };
 
+module.exports.load = module.exports;
+let data;
+Object.defineProperty(module.exports, 'data', {
+	getter() {
+		return data ? data :
+				data = module.exports();
+	},
+	configurable: false,
+	enumerable: true,
+});
+
 Object.defineProperty(exports, "__esModule", { value: true });
