@@ -33,6 +33,10 @@ declare namespace NodeJS {
 		env: ${envGen.mainType};
 	}*/
 }
+declare module "@gongt/jenv-data" {
+	export const JsonEnv: JsonEnvConfigModule.IJsonEnvConfig;
+	export function load(): JsonEnvConfigModule.IJsonEnvConfig;
+}
 `;
 	const dts = targetFile.replace(/\.js$/, '') + '.d.ts';
 	if (prettyPrint) {
