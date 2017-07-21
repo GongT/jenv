@@ -9,7 +9,7 @@ import MyError from "../library/error";
 import {writeJsonFile} from "../library/json";
 import {configSetPath} from "../library/path";
 import {newEnvironment} from "./new-env";
-import {gitinit, gitbranch_rename, gitadd, gitcommit} from "../library/git";
+import {gitadd, gitbranch_rename, gitcommit, gitinit} from "../library/git";
 
 export function createConfigSet(name, global) {
 	const targetPath = configSetPath(name, global || false);
@@ -32,7 +32,7 @@ export function createConfigSet(name, global) {
 		const gitignoreFile = resolve(targetPath, '.gitignore');
 		writeFileSync(gitignoreFile, `
 .idea
-`, 'utf-8');
+`, {encoding: 'utf8'});
 		
 		gitadd(targetPath);
 		

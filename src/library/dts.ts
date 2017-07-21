@@ -42,7 +42,7 @@ declare module "@gongt/jenv-data" {
 	if (prettyPrint) {
 		console.error('<- %s', dts);
 	}
-	fs.writeFileSync(dts, oldGeneration, 'utf-8');
+	fs.writeFileSync(dts, oldGeneration, {encoding: 'utf8'});
 	
 	const newGeneration = `// GENERATED FILE
 
@@ -62,7 +62,7 @@ export const JsonEnv: ${mainGen.mainType} = <any>{};
 	if (prettyPrint) {
 		console.error('<- %s', newDts);
 	}
-	fs.writeFileSync(newDts, newGeneration, 'utf-8');
+	fs.writeFileSync(newDts, newGeneration, {encoding: 'utf8'});
 }
 
 export class TypescriptDeclarationGenerator {

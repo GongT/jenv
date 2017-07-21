@@ -1,6 +1,6 @@
 {
 	"name": "@gongt/jenv",
-	"version": "2.1.9",
+	"version": "2.1.10",
 	"description": "save config to git (as json) and set (some of) them as environment variables",
 	"main": "./simple-package/require.js",
 	"bin": {

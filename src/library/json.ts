@@ -1,4 +1,4 @@
-import {readFileSync, writeFileSync, existsSync} from "fs";
+import {existsSync, readFileSync, writeFileSync} from "fs";
 import {dirname} from "path";
 import {sync as mkdirpSync} from "mkdirp";
 import {prettyPrint} from "./output";
@@ -6,7 +6,7 @@ import {prettyPrint} from "./output";
 export function readJsonFile(file) {
 	try {
 		//noinspection TypeScriptUnresolvedFunction
-		return JSON.parse(readFileSync(file, 'utf-8'));
+		return JSON.parse(readFileSync(file, {encoding: 'utf8'}));
 	} catch (e) {
 		e.message += ` (in file ${file})`;
 		throw e;
@@ -27,7 +27,7 @@ export function writeJsonFile(file, data): boolean {
 			console.error('<+ %s', dir);
 			mkdirpSync(dir);
 		}
-		writeFileSync(file, str, 'utf-8');
+		writeFileSync(file, str, {encoding: 'utf8'});
 		return true;
 	} catch (e) {
 		console.error(e.message);

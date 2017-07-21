@@ -13,10 +13,10 @@ export function nodeExecSync(command: string, path: string, input: string = ''):
 	return execSync(command, <ExecSyncOptions>{
 		cwd: path,
 		stdio: 'pipe',
-		encoding: 'utf-8',
+		encoding: 'utf8',
 		env: env_english,
 		input: input
-	}).toString('utf-8').trim();
+	}).toString('utf8').trim();
 }
 
 export function nodeSpawnSync(cmd: string, args: string[], options: SpawnSyncOptions = {}) {
