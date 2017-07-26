@@ -1,6 +1,6 @@
 {
 	"name": "@gongt/jenv-data",
-	"version": "1.2.6",
+	"version": "1.2.7",
 	"description": "load json from `json-env-cli`",
 	"main": "./require.js",
 	"repository": {
@@ -13,7 +13,5 @@
 		"url": "https://github.com/GongT/jenv/issues"
 	},
 	"homepage": "https://github.com/GongT/jenv#readme",
-	"dependencies": {
-		"debug": "~2.2.0"
-	}
+	"dependencies": {}
 }

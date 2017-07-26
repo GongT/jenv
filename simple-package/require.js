@@ -1,7 +1,12 @@
-const debug = require('debug')('jenv:loader');
+const isServer = typeof process === 'object';
+const isDebug = isServer ? process.env.NODE_ENV !== 'production' : true;
 let data, cache;
 
-function loader() {
+function window_loader() {
+	return window.__JsonEnv;
+}
+
+function fs_loader() {
 	const configFilePath = process.env.CONFIG_FILE || process.env.JENV_FILE_NAME;
 	if (!configFilePath) {
 		throw new Error(`please set environment "CONFIG_FILE" or "JENV_FILE_NAME".`);
@@ -11,7 +16,9 @@ function loader() {
 		return data;
 	}
 	
-	debug(`load config from ${configFilePath}`);
+	if (isDebug) {
+		console.log(`load config from ${configFilePath}`);
+	}
 	if (!require('fs').existsSync(configFilePath)) {
 		throw new Error(`config file ${configFilePath} not exists.`);
 	}
@@ -20,6 +27,7 @@ function loader() {
 	return data = require(configFilePath);
 }
 
+const loader = isServer ? fs_loader : window_loader;
 module.exports = loader;
 module.exports.load = loader;
 Object.defineProperty(module.exports, 'JsonEnv', {
@@ -28,4 +36,4 @@ Object.defineProperty(module.exports, 'JsonEnv', {
 	enumerable: true,
 });
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(module.exports, "__esModule", { value: true });
