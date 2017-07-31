@@ -1,37 +1,26 @@
 import {resolve} from "path";
-var osLocale = require('os-locale');
+import {existsSync} from "fs";
+const osLocale = require('os-locale').sync;
 
-let callback = [];
-export default function installI18N(cb) {
-	if (global.t) {
-		cb();
-	} else {
-		callback.push(cb);
+let locale;
+export default function installI18N() {
+	if (locale) {
+		return;
 	}
-}
-
-osLocale((err, locale) => {
-	if (err) {
-		throw err;
-	}
-	
+	locale = osLocale();
 	locale = locale.toLowerCase().replace(/_/g, '-');
 	if (locale === 'posix') {
 		locale = 'en-us';
 	}
 	
 	let langFile = localeFilePath(locale);
-	if (!require('fs').existsSync(require('path').resolve(__dirname, langFile))) {
+	if (!existsSync(require('path').resolve(__dirname, langFile))) {
 		console.warn(`Warn: no language file for ${locale}, fallback to en.`);
 		locale = 'en-us';
 		langFile = localeFilePath(locale);
 	}
-	
 	global.t = getTextFn(locale, require(langFile));
-	callback.forEach((cb) => {
-		cb();
-	});
-});
+}
 
 function getTextFn(locale, data) {
 	return (text) => {
