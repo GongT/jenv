@@ -1,0 +1,25 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es3",
+		"lib": ["es6"],
+		"moduleResolution": "node",
+		"noEmitOnError": false,
+		"noImplicitThis": true,
+		"noImplicitAny": false,
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": false,
+		"pretty": true,
+		"sourceMap": true,
+		"baseUrl": "./",
+		"outDir": "./",
+		"rootDir": "./",
+		"typeRoots": ["../node_modules/@types"]
+	},
+	"files": ["require.ts"]
+}
