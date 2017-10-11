@@ -13,6 +13,7 @@ const resetColor = IS_SERVER ? '\x1B[0m' : 'color:black;font-size:normal;';
 
 export function alertJenv<T>(option: T, valueName: keyof T) {
 	if (option.hasOwnProperty(valueName)) {
-		console.error(`${colorHolder}参数%s应使用JsonEnv传入${colorHolder}`, errorColor, valueName, resetColor);
+		const trace = (new Error).stack.replace(/^.*\n/, '');
+		console.error(`${colorHolder}参数%s应使用JsonEnv传入${colorHolder}\n%s`, errorColor, valueName, resetColor, trace);
 	}
 }
